@@ -84,7 +84,7 @@ The goal is to make AI workflows **visual, composable, and production-ready**.
 │   └── requirements.txt
 │
 └── README.md
-
+```
 
 ## ⚙️ Setup & Installation
 
@@ -92,23 +92,23 @@ The goal is to make AI workflows **visual, composable, and production-ready**.
 ```bash
 git clone https://github.com/your-username/vectorshift.git
 cd vectorshift
-
+```
 ### 2️⃣ Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
-
+```
 
 Create a frontend/.env file:
 ```bash
 VITE_API_BASE_URL="http://localhost:8000/api/v1"
-
+```
 
 Frontend will run at:
 ```bash
 http://localhost:5173
-
+```
 
 ### 3️⃣ Backend Setup
 ```bash
@@ -116,18 +116,18 @@ cd backend
 python -m venv venv
 source venv/bin/activate  # (Windows: venv\Scripts\activate)
 pip install -r requirements.txt
-
+```
 
 Create a backend/.env file:
 ```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/vectorshift
 MISTRAL_API_KEY=your_api_key_here
-
+```
 
 Run the backend:
 ```bash
 fastapi dev main.py
-
+```
 Backend will run at:http://localhost:8000
 
 

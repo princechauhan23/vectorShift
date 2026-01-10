@@ -1,48 +1,7 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import { Handle } from 'reactflow';
-import { useStore } from '../store';
+import { useStore } from '../stores/store';
 import { useNodeDefinitionStore } from '../stores/nodeDefinitionStore';
-
-// Dropdown styles
-const dropdownStyle = {
-  position: 'absolute',
-  top: '100%',
-  left: 0,
-  right: 0,
-  marginTop: 4,
-  backgroundColor: '#fff',
-  border: '1px solid #e5e7eb',
-  borderRadius: 8,
-  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-  zIndex: 1000,
-  maxHeight: 150,
-  overflowY: 'auto',
-};
-
-const dropdownItemStyle = {
-  padding: '8px 12px',
-  fontSize: 12,
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8,
-  borderBottom: '1px solid #f3f4f6',
-};
-
-const dropdownItemHoverStyle = {
-  ...dropdownItemStyle,
-  backgroundColor: '#f3f4f6',
-};
-
-const variableBadgeStyle = {
-  backgroundColor: '#dbeafe',
-  color: '#1d4ed8',
-  padding: '2px 6px',
-  borderRadius: 4,
-  fontSize: 11,
-  fontWeight: 600,
-  fontFamily: 'monospace',
-};
 
 // Node type categories
 const INPUT_NODE_TYPES = ['text', 'input', 'text_input', 'textinput'];
@@ -306,69 +265,6 @@ const AutoResizeTextarea = ({ value, onChange, rows = 3, style, ...props }) => {
   );
 };
 
-const baseCardStyle = {
-  width: 240,
-  minHeight: 110,
-  borderRadius: 12,
-  border: '1px solid #e5e7eb',
-  boxShadow: '0 6px 14px rgba(0,0,0,0.06)',
-  background: '#fff',
-  padding: '12px 14px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 8,
-  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
-};
-
-const headerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 8,
-  fontWeight: 700,
-  color: '#111827',
-  fontSize: 14,
-};
-
-const descriptionStyle = {
-  color: '#4b5563',
-  fontSize: 12,
-  lineHeight: 1.4,
-};
-
-const resultStyle = {
-  marginTop: 8,
-  padding: '10px 12px',
-  backgroundColor: '#f0fdf4',
-  border: '1px solid #22c55e',
-  borderRadius: 8,
-  fontSize: 12,
-  color: '#166534',
-  lineHeight: 1.5,
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-word',
-  maxHeight: 200,
-  overflowY: 'auto',
-};
-
-const fieldLabelStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 4,
-  color: '#111827',
-  fontWeight: 600,
-  fontSize: 12,
-};
-
-const inputStyle = {
-  padding: '8px 10px',
-  borderRadius: 8,
-  border: '1px solid #e5e7eb',
-  fontSize: 12,
-  color: '#111827',
-  outline: 'none',
-};
-
 export const buildNodeComponent = (config) => {
   const Component = ({ id, data = {} }) => {
     const { updateNodeField } = useStore();
@@ -483,4 +379,108 @@ export const buildInitialData = (config) => {
     initial[field.name] = field.defaultValue ?? '';
   });
   return initial;
+};
+
+const baseCardStyle = {
+  width: 240,
+  minHeight: 110,
+  borderRadius: 12,
+  border: '1px solid #e5e7eb',
+  boxShadow: '0 6px 14px rgba(0,0,0,0.06)',
+  background: '#fff',
+  padding: '12px 14px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
+  fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+};
+
+const headerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 8,
+  fontWeight: 700,
+  color: '#111827',
+  fontSize: 14,
+};
+
+const descriptionStyle = {
+  color: '#4b5563',
+  fontSize: 12,
+  lineHeight: 1.4,
+};
+
+const resultStyle = {
+  marginTop: 8,
+  padding: '10px 12px',
+  backgroundColor: '#f0fdf4',
+  border: '1px solid #22c55e',
+  borderRadius: 8,
+  fontSize: 12,
+  color: '#166534',
+  lineHeight: 1.5,
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-word',
+  maxHeight: 200,
+  overflowY: 'auto',
+};
+
+const fieldLabelStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 4,
+  color: '#111827',
+  fontWeight: 600,
+  fontSize: 12,
+};
+
+const inputStyle = {
+  padding: '8px 10px',
+  borderRadius: 8,
+  border: '1px solid #e5e7eb',
+  fontSize: 12,
+  color: '#111827',
+  outline: 'none',
+};
+
+// Dropdown styles
+const dropdownStyle = {
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  right: 0,
+  marginTop: 4,
+  backgroundColor: '#fff',
+  border: '1px solid #e5e7eb',
+  borderRadius: 8,
+  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+  zIndex: 1000,
+  maxHeight: 150,
+  overflowY: 'auto',
+};
+
+const dropdownItemStyle = {
+  padding: '8px 12px',
+  fontSize: 12,
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  borderBottom: '1px solid #f3f4f6',
+};
+
+const dropdownItemHoverStyle = {
+  ...dropdownItemStyle,
+  backgroundColor: '#f3f4f6',
+};
+
+const variableBadgeStyle = {
+  backgroundColor: '#dbeafe',
+  color: '#1d4ed8',
+  padding: '2px 6px',
+  borderRadius: 4,
+  fontSize: 11,
+  fontWeight: 600,
+  fontFamily: 'monospace',
 };

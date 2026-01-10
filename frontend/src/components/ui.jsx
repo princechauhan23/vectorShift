@@ -4,7 +4,7 @@
 
 import { useState, useRef, useCallback, useMemo } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
-import { useStore } from '../store';
+import { useStore } from '../stores/store';
 import { getNodeTypes, getInitialDataForType } from '../nodes/nodeRegistry';
 
 import 'reactflow/dist/style.css';

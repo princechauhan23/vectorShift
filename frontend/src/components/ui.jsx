@@ -139,7 +139,7 @@ const PipelineUI = () => {
                     <strong>Pipeline Info:</strong> {pipelineResult.num_nodes} nodes, {pipelineResult.num_edges} edges
                     {pipelineResult.is_dag ? ' (Valid DAG)' : ' (Invalid - contains cycle)'}
                 </div>
-                {pipelineResult.result && (
+                {pipelineResult.outputs && Array.isArray(pipelineResult.outputs) && pipelineResult.outputs.length > 0 && (
                     <div style={{
                         marginTop: '15px',
                         padding: '15px',
@@ -150,8 +150,16 @@ const PipelineUI = () => {
                         fontFamily: 'inherit',
                         lineHeight: '1.6'
                     }}>
-                        <strong style={{ color: '#166534' }}>Result:</strong>
-                        <div style={{ marginTop: '10px' }}>{pipelineResult.result}</div>
+                        {pipelineResult.outputs.map((output) => {
+                            const outputId = Object.keys(output)[0];
+                            const outputValue = output[outputId];
+                            return (
+                            <div key={outputId} style={{ marginBottom: '10px' }}>
+                                <strong style={{ color: '#166534' }}>{outputId}:</strong>
+                                <div style={{ marginTop: '10px' }}>{outputValue || 'No output'}</div>
+                            </div>
+                        );
+                    })}
                     </div>
                 )}
                 <button 

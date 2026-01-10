@@ -130,10 +130,11 @@ fastapi dev main.py
 ```
 Backend will run at:http://localhost:8000
 
-
+```bash
 ### 🔌 API Overview
 Method	Endpoint	                    Description
 POST	  /pipelines/execute	          Execute a pipeline
 POST	  /pipelines/save	              Save pipeline configuration
 GET	    /pipelines/{id}	              Fetch pipeline details
 GET	    /health	Health check          Health check
+```

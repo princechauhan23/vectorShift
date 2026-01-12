@@ -7,17 +7,28 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-
+DATABASE_URL = os.getenv("DATABASE_URL", "")
 # Create engine for PostgreSQL
-engine = create_engine(os.getenv("DATABASE_URL", ""), echo=True)
-
+engine = None
+if DATABASE_URL:
+    engine = create_engine(DATABASE_URL, echo=True)
+else:
+    raise RuntimeError("DATABASE_URL is not set")
 
 def init_db():
     """Initialize database tables."""
-    SQLModel.metadata.create_all(engine)
+    if engine is not None:
+        SQLModel.metadata.create_all(engine)
+    else:
+        raise RuntimeError("Database engine is not initialized")
 
 
 def get_db():
     """Dependency that provides a database session."""
-    with Session(engine) as session:
+    if engine is not None:
+        with Session(engine) as session:
+            yield session
+    else:
+        raise RuntimeError("Database engine is not initialized")
+
         yield session

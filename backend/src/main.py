@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 load_dotenv()
 
 from src.api import router
-from src.config import init_db
+from src.config.database import init_db
 
 
 @asynccontextmanager

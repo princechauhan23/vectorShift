@@ -1,7 +1,6 @@
 import sys
-from pathlib import Path
+import os
 
-# Add the backend directory to Python path so 'src' module can be found
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from src.main import app

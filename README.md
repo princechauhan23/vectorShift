@@ -72,6 +72,8 @@ The goal is to make AI workflows **visual, composable, and production-ready**.
 │
 ├── backend/
 │   ├── .venv
+│   ├── api/
+│   │   ├── index.py           # main entry point
 │   ├── src/
 │   │   ├── config/            # DB configurations
 │   │   ├── controllers/       # AI & pipeline logic
@@ -79,8 +81,8 @@ The goal is to make AI workflows **visual, composable, and production-ready**.
 │   │   ├── models/            # Database models
 │   │   ├── schemas/           # Pydantic schemas
 │   │   ├── utils/             # utility helper functions
-│   │   └── api.py             # main router
-│   ├── main.py
+│   │   ├── api.py             # main router
+│   │   └── main.py
 │   └── requirements.txt
 │
 └── README.md
@@ -114,19 +116,25 @@ http://localhost:5173
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # (Windows: venv\Scripts\activate)
+source venv/bin/activate  # (Windows: venv\Scripts\Activate.ps1)
 pip install -r requirements.txt
 ```
 
 Create a backend/.env file:
 ```bash
-DATABASE_URL=postgresql://user:password@localhost:5432/vectorshift
 MISTRAL_API_KEY=your_api_key_here
+user=your_supabase_user
+password=supabase_project_password
+host=database_host
+port=5432
+dbname=postgres
 ```
 
 Run the backend:
 ```bash
-fastapi dev main.py
+fastapi dev main.py --reload
+// or
+uvicorn api.index:app --reload
 ```
 Backend will run at:http://localhost:8000
 

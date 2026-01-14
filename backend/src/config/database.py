@@ -1,50 +1,65 @@
-# Database connection and session management
+# Database connection and session management (adapted from Supabase docs)
 
 import os
-from urllib.parse import quote_plus
-from sqlmodel import SQLModel, Session
-from sqlalchemy import create_engine
-from sqlalchemy.pool import NullPool
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+# from sqlalchemy.pool import NullPool
+from sqlmodel import SQLModel, Session
+from urllib.parse import quote_plus
 
 # Load environment variables from .env
 load_dotenv()
 
-# Fetch variables from environment
+# Fetch variables
 USER = os.getenv("user")
 PASSWORD = os.getenv("password")
 HOST = os.getenv("host")
 PORT = os.getenv("port", "5432")
 DBNAME = os.getenv("dbname")
 
-# URL-encode username and password to handle special characters (@, #, etc.)
-ENCODED_USER = quote_plus(USER) if USER else None
-ENCODED_PASSWORD = quote_plus(PASSWORD) if PASSWORD else None
+if not all([USER, PASSWORD, HOST, DBNAME]):
+    raise RuntimeError("Database credentials are not fully set. Required: user, password, host, dbname")
 
-# Construct the SQLAlchemy connection string for Supabase
+# URL-encode username/password to survive special characters (#, @, etc.)
+ENCODED_USER = quote_plus(USER)
+ENCODED_PASSWORD = quote_plus(PASSWORD)
+
+# Guard against misconfigured host containing credentials
+if "@" in HOST:
+    raise RuntimeError(
+        "The 'host' env var appears to include credentials. "
+        "Set 'host' to the bare domain (e.g. aws-1-ap-south-1.pooler.supabase.com) "
+        "and keep username/password in 'user'/'password'."
+    )
+
+# Construct the SQLAlchemy connection string
 DATABASE_URL = f"postgresql+psycopg2://{ENCODED_USER}:{ENCODED_PASSWORD}@{HOST}:{PORT}/{DBNAME}?sslmode=require"
 
 # Create the SQLAlchemy engine
-# Using NullPool for serverless/pooler compatibility
-engine = None
-if all([USER, PASSWORD, HOST, DBNAME]):
-    engine = create_engine(DATABASE_URL, poolclass=NullPool, echo=True)
-else:
-    raise RuntimeError("Database credentials are not fully set. Required: user, password, host, dbname")
+engine = create_engine(DATABASE_URL)
+# If using Transaction Pooler or Session Pooler, disable client-side pooling:
+# engine = create_engine(DATABASE_URL, poolclass=NullPool)
 
 
 def init_db():
     """Initialize database tables."""
-    if engine is not None:
-        SQLModel.metadata.create_all(engine)
-    else:
-        raise RuntimeError("Database engine is not initialized")
+    SQLModel.metadata.create_all(engine)
 
 
 def get_db():
     """Dependency that provides a database session."""
-    if engine is not None:
-        with Session(engine) as session:
-            yield session
-    else:
-        raise RuntimeError("Database engine is not initialized")
+    with Session(engine) as session:
+        yield session
+
+
+def _test_connection():
+    """Test database connectivity (mirrors Supabase sample)."""
+    try:
+        with engine.connect() as connection:
+            print("Connection successful!")
+    except Exception as e:  # pragma: no cover - diagnostic helper
+        print(f"Failed to connect: {e}")
+
+
+if __name__ == "__main__":
+    _test_connection()
